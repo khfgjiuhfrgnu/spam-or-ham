@@ -1,0 +1,18 @@
+/* style.css */
+html, body, [data-testid="stAppViewContainer"] {
+    background: linear-gradient(135deg, #1741e6 0%, #0f172a 100%);
+}
+
+section[data-testid="stTextArea"] textarea {
+    background: #d8dbdf;
+    color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #375145;
+}
+
+button[kind="primary"]{
+    background: #00bfa5;
+    color: rgb(216, 9, 9);
+    border-radius: 10px;
+    border: none;
+}
