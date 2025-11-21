@@ -1,6 +1,6 @@
 /* style.css */
 html, body, [data-testid="stAppViewContainer"] {
-    background: linear-gradient(135deg, #1741e6 0%, #0f172a 100%);
+    background: linear-gradient(135deg, #c0e617 0%, #0f172a 100%);
 }
 
 section[data-testid="stTextArea"] textarea {
@@ -16,3 +16,4 @@ button[kind="primary"]{
     border-radius: 10px;
     border: none;
 }
+
