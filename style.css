@@ -1,19 +1,18 @@
 /* style.css */
 html, body, [data-testid="stAppViewContainer"] {
-    background: linear-gradient(135deg, #c0e617 0%, #0f172a 100%);
+    background: linear-gradient(135deg, lch(83.95% 17.72 48.49) 0%, #0f172a 100%);
 }
 
 section[data-testid="stTextArea"] textarea {
-    background: #d8dbdf;
-    color: #ffffff;
+    background: #095bc7;
+    color: hsl(0, 74%, 32%);
     border-radius: 10px;
     border: 1px solid #375145;
 }
 
 button[kind="primary"]{
-    background: #00bfa5;
-    color: rgb(216, 9, 9);
+    background: #bfbc00;
+    color: rgb(44, 216, 9);
     border-radius: 10px;
     border: none;
 }
-
