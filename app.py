@@ -3,139 +3,90 @@ import joblib
 import re
 import nltk
 from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
 import pandas as pd
 
 # -----------------------------
-# Config page
+# Télécharger NLTK resources
 # -----------------------------
-st.set_page_config(page_title="Détecteur Spam or Ham", page_icon="📩", layout="centered")
-
-
-
+nltk.download('stopwords', quiet=True)
 
 # -----------------------------
-# Inject CSS
+# Load model and vectorizer
 # -----------------------------
-def inject_css(path="style.css"):
+model = joblib.load('spam_model.pkl')
+vectorizer = joblib.load('vectorizer.pkl')
+
+# -----------------------------
+# Preprocessing function
+# -----------------------------
+def preprocess_text(text):
+    text = text.lower()  # Lowercase
+    text = re.sub(r'[^\w\s]', '', text)  # Remove punctuation
+    text = re.sub(r'http\S+', '', text)  # Remove URLs
+    text = re.sub(r'@\w+', '', text)  # Remove mentions
+    words = text.split()
+    stop_words = set(stopwords.words('english'))
+    words = [word for word in words if word not in stop_words]
+    stemmer = PorterStemmer()
+    words = [stemmer.stem(word) for word in words]
+    return ' '.join(words)
+
+# -----------------------------
+# Inject CSS (style.css)
+# -----------------------------
+def inject_css(file_path="style.css"):
     try:
-        with open(path, "r", encoding="utf-8") as f:
-            css = f.read()
-            st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
+        with open(file_path) as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
     except FileNotFoundError:
-        st.warning("⚠️ style.css introuvable, using default styles.")
+        st.warning("style.css not found, using default style.")
 
 inject_css()
 
 # -----------------------------
-# NLTK
+# Streamlit UI
 # -----------------------------
-nltk.download("stopwords", quiet=True)
-nltk.download("punkt", quiet=True)
-
-stop_words = set(stopwords.words("english"))
-stemmer = PorterStemmer()
+st.title("📩 Spam or Ham Detector")
+st.write("Enter a message or upload a CSV to check if it's spam or ham.")
 
 # -----------------------------
-# Charger modèle + vectorizer
+# Individual message prediction
 # -----------------------------
-@st.cache_resource
-def load_model():
-    model = joblib.load("spam_model.pkl")
-    vectorizer = joblib.load("tfidf.pkl")
-    return model, vectorizer
+user_input = st.text_area("Message:")
 
-try:
-    model, vectorizer = load_model()
-except:
-    st.error("❌ Fichiers du modèle introuvables !")
-    st.stop()
-
-# -----------------------------
-# Nettoyage texte (same as training)
-# -----------------------------
-def clean_text(text):
-    text = str(text).lower()
-    text = re.sub(r"http\S+|www\S+", "", text)
-    text = re.sub(r"[^a-zA-Z]", " ", text)
-    tokens = word_tokenize(text)
-    tokens = [stemmer.stem(w) for w in tokens if w not in stop_words]
-    return " ".join(tokens)
-
-# -----------------------------
-# UI
-# -----------------------------
-st.title("📩 Détecteur Spam or Ham")
-st.caption("Développé par Ahmed | Khaled | Omar")
-
-message = st.text_area("Écris ton message ici :", placeholder="Colle ton SMS ou email...")
-
-col1, col2 = st.columns([1,1])
-analyze = col1.button("Analyser")
-reset = col2.button("Effacer")
-
-if reset:
-    st.experimental_set_query_params()
-    st.rerun()
-
-if analyze:
-    if not message.strip():
-        st.warning("⚠️ Veuillez entrer un message.")
+if st.button("Predict"):
+    if user_input:
+        processed_text = preprocess_text(user_input)
+        vectorized_text = vectorizer.transform([processed_text])
+        prediction = model.predict(vectorized_text)[0]
+        label = "Ham" if prediction == 0 else "Spam"
+        st.write(f"Prediction: **{label}**")
     else:
-        cleaned = clean_text(message)
-        if cleaned.strip() == "":
-            cleaned = "empty"
-        vec = vectorizer.transform([cleaned])
-        pred = model.predict(vec)[0]
-        label = "Ham" if pred==0 else "Spam"
-
-        confidence = ""
-        if hasattr(model, "predict_proba"):
-            prob = model.predict_proba(vec)[0][pred]
-            confidence = f" — Confiance: {prob:.2%}"
-
-        if pred == 0:
-            st.success(f"✔ {label}{confidence}")
-        else:
-            st.error(f"❌ {label}{confidence}")
+        st.write("⚠️ Please enter a message.")
 
 # -----------------------------
-# Analyse CSV
+# CSV batch prediction
 # -----------------------------
-st.subheader("📁 Analyse d’un fichier CSV")
-uploaded = st.file_uploader("Importer un fichier CSV", type=["csv"])
+st.subheader("Or upload a CSV file for batch prediction")
+uploaded_file = st.file_uploader("Upload CSV", type=["csv"])
 
-def read_csv_safe(file):
-    encodings = ["utf-8", "latin1", "iso-8859-1", "cp1252"]
-    for enc in encodings:
-        try:
-            return pd.read_csv(file, encoding=enc)
-        except:
-            pass
-    raise ValueError("⚠️ Type d'encodage non supporté")
-
-if uploaded:
+if uploaded_file:
     try:
-        df = read_csv_safe(uploaded)
-        col = None
-        for c in ["sms", "text", "message", "content"]:
-            if c in df.columns:
-                col = c
-                break
-        if col is None:
-            st.error("⚠️ Le CSV doit contenir une colonne 'sms' ou 'text'.")
+        df = pd.read_csv(uploaded_file)
+        # تأكد العمود: 'sms' أو 'message'
+        if 'sms' not in df.columns and 'message' not in df.columns:
+            st.error("CSV must contain a column named 'sms' or 'message'.")
         else:
-            df["cleaned"] = df[col].astype(str).apply(clean_text)
-            df["cleaned"] = df["cleaned"].replace("", "empty")
-            X = vectorizer.transform(df["cleaned"])
-            df["prediction"] = model.predict(X)
-            df["Class"] = df["prediction"].map({0: "Ham", 1: "Spam"})
-
-            st.success("Analyse terminée !")
-            st.dataframe(df[[col, "Class"]], use_container_width=True)
-
-            csv_out = df.to_csv(index=False).encode("utf-8")
-            st.download_button("Télécharger Résultats", csv_out, "predictions.csv", "text/csv")
+            col_name = 'sms' if 'sms' in df.columns else 'message'
+            df['processed'] = df[col_name].astype(str).apply(preprocess_text)
+            X_vec = vectorizer.transform(df['processed'])
+            df['prediction'] = model.predict(X_vec)
+            df['label'] = df['prediction'].map({0: 'Ham', 1: 'Spam'})
+            st.success("Batch prediction completed!")
+            st.dataframe(df[[col_name, 'label']], use_container_width=True)
+            csv_out = df.to_csv(index=False).encode('utf-8')
+            st.download_button("Download Predictions", csv_out, "predictions.csv", "text/csv")
     except Exception as e:
-        st.error(f"Erreur : {e}")
+        st.error(f"Error reading CSV: {e}")
+
