@@ -2,6 +2,13 @@
 html, body, [data-testid="stAppViewContainer"] {
     background: linear-gradient(135deg, lch(83.95% 17.72 48.49) 0%, #0f172a 100%);
 }
+.page-icon {
+  color: #3b82f6;   /* bleu pro */
+}
+svg {
+  fill: #ffffff;    /* blanc contrast */
+}
+
 
 section[data-testid="stTextArea"] textarea {
     background: #095bc7;
@@ -16,3 +23,4 @@ button[kind="primary"]{
     border-radius: 10px;
     border: none;
 }
+
