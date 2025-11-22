@@ -6,21 +6,10 @@ from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 import pandas as pd
 
-
-if prediction == 0:
-    st.markdown('<div class="ham-result">✔ Ham — Message normal</div>', unsafe_allow_html=True)
-else:
-    st.markdown('<div class="spam-result">❌ SPAM — Attention danger !</div>', unsafe_allow_html=True)
-
-
 # -----------------------------
 # Télécharger NLTK resources
 # -----------------------------
 nltk.download('stopwords')
-
-
-with open("style.css") as f:
-    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # -----------------------------
 # Load model and vectorizer (training outputs)
@@ -46,8 +35,6 @@ def preprocess_text(text):
 # -----------------------------
 # Inject CSS
 # -----------------------------
-
-
 def inject_css(file_path="style.css"):
     try:
         with open(file_path) as f:
@@ -74,7 +61,7 @@ if st.button("Predict"):
         X_new = vectorizer.transform([processed_text])
         prediction = model.predict(X_new)[0]
 
-        # Résultat avec style.css
+        # Résultat animé فقط للرسالة
         if prediction == 0:
             st.markdown('<div class="ham-result">✔ Ham — Message normal</div>', unsafe_allow_html=True)
         else:
