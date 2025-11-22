@@ -55,7 +55,7 @@ X_test_processed = X_test.apply(preprocess_text)
 # -----------------------------
 # 4️⃣ Vectorizer TF-IDF
 # -----------------------------
-vectorizer = TfidfVectorizer(max_features=5000)
+vectorizer = TfidfVectorizer(max_features=5582)
 X_train_vectorized = vectorizer.fit_transform(X_train_processed)
 X_test_vectorized = vectorizer.transform(X_test_processed)
 
@@ -81,3 +81,4 @@ print(f"F1-Score Macro: {f1_macro:.4f}")
 joblib.dump(model, 'spam_model.pkl')
 joblib.dump(vectorizer, 'vectorizer.pkl')
 print("Model and vectorizer saved!")
+
