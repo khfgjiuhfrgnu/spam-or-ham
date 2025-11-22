@@ -1,96 +1,83 @@
 import pandas as pd
+import numpy as np
 import re
 import nltk
 from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
-from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, f1_score
 import joblib
 
-# Télécharger ressources
-nltk.download("stopwords")
-nltk.download("punkt")
+# Télécharger NLTK resources (run once)
+nltk.download('stopwords')
 
-# -------------------------
-# 1) Charger dataset
-# -------------------------
-df = pd.read_csv("spam (or) ham.csv", encoding="latin-1")
+# -----------------------------
+# 1️⃣ Charger dataset
+# -----------------------------
+df = pd.read_csv('spam (or) ham.csv', encoding='latin-1')  # <-- dataset ici
+df = df.iloc[:, :2]  # garder أول جوج كولونات فقط
+df.columns = ['label', 'message']  # renommer les colonnes
 
-# garder غير أول جوج كولونات
-df = df.iloc[:, :2]
-df.columns = ['Class', 'sms']
+# Nettoyer NaN et garder uniquement ham/spam
+df = df.dropna(subset=['label', 'message'])
+df['label'] = df['label'].str.lower()
+df = df[df['label'].isin(['ham', 'spam'])]
 
-# 🔥 حذف أي صف فيه NaN:
-df = df.dropna(subset=['Class', 'sms'])
+# Encoder les labels: 0 = ham, 1 = spam
+df['label'] = df['label'].map({'ham': 0, 'spam': 1})
 
-# 🔥 تحويل labels ل lower-case (باش نتفادو أخطاء SPAM / Spam)
-df['Class'] = df['Class'].str.lower()
+# -----------------------------
+# 2️⃣ Split train/test
+# -----------------------------
+X_train, X_test, y_train, y_test = train_test_split(
+    df['message'], df['label'], test_size=0.2, random_state=42
+)
 
-# 🔥 الإبقاء فقط على spam / ham
-df = df[df['Class'].isin(['spam', 'ham'])]
-
-print("Shape après nettoyage :", df.shape)
-
-# -------------------------
-# 2) Nettoyage
-# -------------------------
-stop_words = set(stopwords.words("english"))
-stemmer = PorterStemmer()
-
-def clean_text(text):
+# -----------------------------
+# 3️⃣ Nettoyage + tokenization + stemming
+# -----------------------------
+def preprocess_text(text):
     text = str(text).lower()
     text = re.sub(r"http\S+|www\S+", "", text)
-    text = re.sub(r"[^a-zA-Z]", " ", text)
-    tokens = word_tokenize(text)
-    tokens = [stemmer.stem(w) for w in tokens if w not in stop_words]
-    return " ".join(tokens)
+    text = re.sub(r"[^\w\s]", "", text)  # supprimer ponctuation
+    words = text.split()
+    stop_words = set(stopwords.words('english'))
+    words = [w for w in words if w not in stop_words]
+    stemmer = PorterStemmer()
+    words = [stemmer.stem(w) for w in words]
+    return ' '.join(words)
 
-df["cleaned"] = df["sms"].apply(clean_text)
+X_train_processed = X_train.apply(preprocess_text)
+X_test_processed = X_test.apply(preprocess_text)
 
-# -------------------------
-# 3) Vectorizer + encode label
-# -------------------------
-vectorizer = TfidfVectorizer(
-    ngram_range=(1,2),
-    min_df=2,
-    sublinear_tf=True
-)
+# -----------------------------
+# 4️⃣ Vectorizer TF-IDF
+# -----------------------------
+vectorizer = TfidfVectorizer(max_features=5000)
+X_train_vectorized = vectorizer.fit_transform(X_train_processed)
+X_test_vectorized = vectorizer.transform(X_test_processed)
 
-X = vectorizer.fit_transform(df["cleaned"])
-y = df["Class"].map({'ham': 0, 'spam': 1})
+# -----------------------------
+# 5️⃣ Modèle Logistic Regression
+# -----------------------------
+model = LogisticRegression(random_state=42)
+model.fit(X_train_vectorized, y_train)
 
-# -------------------------
-# 4) Train test split
-# -------------------------
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
-)
+# -----------------------------
+# 6️⃣ Évaluation
+# -----------------------------
+y_pred = model.predict(X_test_vectorized)
+accuracy = accuracy_score(y_test, y_pred)
+f1_macro = f1_score(y_test, y_pred, average='macro')
 
-# -------------------------
-# 5) Model
-# -------------------------
-model = LogisticRegression(
-    max_iter=800,
-    class_weight='balanced',
-    C=1.8
-)
+print(f"Accuracy: {accuracy:.4f}")
+print(f"F1-Score Macro: {f1_macro:.4f}")
 
-model.fit(X_train, y_train)
-
-# -------------------------
-# 6) Metrics
-# -------------------------
-y_pred = model.predict(X_test)
-print("Accuracy:", accuracy_score(y_test, y_pred))
-print("F1 Score:", f1_score(y_test, y_pred, average='macro'))
-
-# -------------------------
-# 7) Save
-# -------------------------
-joblib.dump(model, "spam_model.pkl")
-joblib.dump(vectorizer, "tfidf.pkl")
-
-print("✅ Model entraîné et sauvegardé")
+# -----------------------------
+# 7️⃣ Sauvegarde modèle et vectorizer
+# -----------------------------
+joblib.dump(model, 'spam_model.pkl')
+joblib.dump(vectorizer, 'vectorizer.pkl')
+print("Model and vectorizer saved!")
