@@ -36,14 +36,9 @@ button[kind="primary"]:hover {
 
 /* Résultat Spam animé */
 .spam-result {
-    background: #dc2626;   /* rouge danger */
-    color: #ffffff;
-    padding: 12px;
-    border-radius: 8px;
-    font-weight: bold;
-    text-align: center;
-    animation: shake 10s ease-in-out, fadeIn 8s ease-out;
+  animation: shake 0.5s infinite;
 }
+
 
 /* Animation fade-in */
 @keyframes fadeIn {
@@ -62,10 +57,11 @@ button[kind="primary"]:hover {
 
 /* Désactiver animation en PDF/print */
 @media print {
-    .spam-result, .ham-result {
+     .ham-result {
         animation: none ;
     }
 }
+
 
 
 
