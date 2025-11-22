@@ -6,6 +6,13 @@ from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 import pandas as pd
 
+
+if prediction == 0:
+    st.markdown('<div class="ham-result">✔ Ham — Message normal</div>', unsafe_allow_html=True)
+else:
+    st.markdown('<div class="spam-result">❌ SPAM — Attention danger !</div>', unsafe_allow_html=True)
+
+
 # -----------------------------
 # Télécharger NLTK resources
 # -----------------------------
