@@ -1,78 +1,28 @@
-/* Background général */
-html, body, [data-testid="stAppViewContainer"] {
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%);
-}
-
-/* Zone de texte */
-section[data-testid="stTextArea"] textarea {
-    background: #1e293b;   /* gris foncé */
-    color: #e5e7eb;        /* gris clair */
-    border-radius: 10px;
-    border: 1px solid #3b82f6; /* bleu accent */
-}
-
-/* Boutons principaux */
+/* Bouton principal */
 button[kind="primary"] {
     background: #3b82f6;   /* bleu pro */
     color: #ffffff;
     border-radius: 10px;
     border: none;
+    transition: 0.3s;
+    animation: pulse 1s ease-in-out; /* أنيميشن يظهر عند الضغط */
 }
+
+/* Effet hover */
 button[kind="primary"]:hover {
     background: #2563eb;   /* bleu plus foncé */
 }
 
-/* Résultat Ham animé */
-.ham-result {
-    background: #22c55e;   /* vert normal */
-    color: #ffffff;
-    padding: 12px;
-    border-radius: 8px;
-    font-weight: bold;
-    text-align: center;
-    animation: fadeIn 6s ease-out;
-}
-
-/* Résultat Spam animé */
-.spam-result {
-    background: #dc2626;   /* rouge danger */
-    color: #ffffff;
-    padding: 12px;
-    border-radius: 8px;
-    font-weight: bold;
-    text-align: center;
-    animation: shake 0.5s ; /* اهتزاز مستمر */
-    border: 3px solid #ff0000; /* إطار أحمر */
-}
-
-
-
-/* Animation fade-in */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* Animation shake */
-@keyframes shake {
-  0% { transform: translateX(0px); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
-  100% { transform: translateX(0px); }
+/* Animation pulse */
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.05); }
+  100% { transform: scale(1); }
 }
 
 /* Désactiver animation en PDF/print */
 @media print {
-     .ham-result {
-        animation: none ;
+    button[kind="primary"] {
+        animation: none !important;
     }
 }
-
-
-
-
-
-
-
-
