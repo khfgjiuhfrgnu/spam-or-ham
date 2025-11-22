@@ -72,10 +72,4 @@ div.ham-result {
   100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
 
-/* Désactiver animation et glow en PDF/print */
-@media print {
-    div.spam-result {
-        box-shadow: none !important;
-        animation: none !important;
-    }
-}
+
