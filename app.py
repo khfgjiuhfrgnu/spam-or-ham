@@ -73,7 +73,7 @@ if st.button("Predict"):
 # CSV batch prediction
 # -----------------------------
 st.subheader("upload a CSV")
-uploaded_file = st.file_uploader("Upload CSV", type=["csv"])
+uploaded_file = st.file_uploader("", type=["csv"])
 
 if uploaded_file:
     try:
