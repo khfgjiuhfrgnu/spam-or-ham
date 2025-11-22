@@ -88,7 +88,7 @@ if uploaded_file:
             df['prediction'] = model.predict(X_vec)
             df['label'] = df['prediction'].map({0: 'Ham', 1: 'Spam'})
 
-            st.success("Batch prediction completed!")
+            st.success("upload Complet")
 
             # Affichage avec style.css
             for _, row in df.iterrows():
