@@ -63,9 +63,10 @@ button[kind="primary"]:hover {
 /* Désactiver animation en PDF/print */
 @media print {
     .spam-result, .ham-result {
-        animation: none !important;
+        animation: none ;
     }
 }
+
 
 
 
