@@ -17,7 +17,6 @@ button[kind="primary"] {
     color: #ffffff;
     border-radius: 10px;
     border: none;
-    transition: 0.3s;
 }
 button[kind="primary"]:hover {
     background: #2563eb;   /* bleu plus foncé */
@@ -69,6 +68,7 @@ button[kind="primary"]:hover {
         animation: none ;
     }
 }
+
 
 
 
