@@ -9,13 +9,13 @@ import pandas as pd
 # -----------------------------
 # Télécharger NLTK resources
 # -----------------------------
-nltk.download('stopwords', quiet=True)
+nltk.download('stopwords')
 
 # -----------------------------
-# Load model and vectorizer
+# Load model and vectorizer (training outputs)
 # -----------------------------
 model = joblib.load('spam_model.pkl')
-vectorizer = joblib.load('vectorizer.pkl')
+vectorizer = joblib.load('tfidf.pkl')
 
 # -----------------------------
 # Preprocessing function
@@ -33,7 +33,7 @@ def preprocess_text(text):
     return ' '.join(words)
 
 # -----------------------------
-# Inject CSS (style.css)
+# Inject optional CSS
 # -----------------------------
 def inject_css(file_path="style.css"):
     try:
@@ -56,14 +56,14 @@ st.write("Enter a message or upload a CSV to check if it's spam or ham.")
 user_input = st.text_area("Message:")
 
 if st.button("Predict"):
-    if user_input:
+    if user_input.strip():
         processed_text = preprocess_text(user_input)
-        vectorized_text = vectorizer.transform([processed_text])
-        prediction = model.predict(vectorized_text)[0]
+        X_new = vectorizer.transform([processed_text])
+        prediction = model.predict(X_new)[0]
         label = "Ham" if prediction == 0 else "Spam"
-        st.write(f"Prediction: **{label}**")
+        st.success(f"Prediction: {label}")
     else:
-        st.write("⚠️ Please enter a message.")
+        st.warning("⚠️ Please enter a message.")
 
 # -----------------------------
 # CSV batch prediction
@@ -74,7 +74,7 @@ uploaded_file = st.file_uploader("Upload CSV", type=["csv"])
 if uploaded_file:
     try:
         df = pd.read_csv(uploaded_file)
-        # تأكد العمود: 'sms' أو 'message'
+        # Ensure column exists
         if 'sms' not in df.columns and 'message' not in df.columns:
             st.error("CSV must contain a column named 'sms' or 'message'.")
         else:
@@ -85,8 +85,9 @@ if uploaded_file:
             df['label'] = df['prediction'].map({0: 'Ham', 1: 'Spam'})
             st.success("Batch prediction completed!")
             st.dataframe(df[[col_name, 'label']], use_container_width=True)
+
+            # Download button
             csv_out = df.to_csv(index=False).encode('utf-8')
             st.download_button("Download Predictions", csv_out, "predictions.csv", "text/csv")
     except Exception as e:
         st.error(f"Error reading CSV: {e}")
-
