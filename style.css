@@ -1,26 +1,38 @@
 /* style.css */
+
+/* Background général */
 html, body, [data-testid="stAppViewContainer"] {
-    background: linear-gradient(135deg, lch(83.95% 17.72 48.49) 0%, #0f172a 100%);
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%);
 }
+
+/* Icône principale */
 .page-icon {
-  color: #3b82f6;   /* bleu pro */
+  color: #facc15;   /* jaune doré accent */
 }
+
+/* Icônes générales */
 svg {
   fill: #ffffff;    /* blanc contrast */
 }
 
-
+/* Zone de texte */
 section[data-testid="stTextArea"] textarea {
-    background: #095bc7;
-    color: hsl(0, 74%, 32%);
+    background: #1e293b;   /* gris foncé */
+    color: #e5e7eb;        /* gris clair */
     border-radius: 10px;
-    border: 1px solid #375145;
+    border: 1px solid #3b82f6; /* bleu accent */
 }
 
-button[kind="primary"]{
-    background: #bfbc00;
-    color: rgb(44, 216, 9);
+/* Boutons principaux */
+button[kind="primary"] {
+    background: #3b82f6;   /* bleu pro */
+    color: #ffffff;        /* blanc */
     border-radius: 10px;
     border: none;
+    transition: 0.3s;
 }
 
+/* Effet hover sur bouton */
+button[kind="primary"]:hover {
+    background: #2563eb;   /* bleu plus foncé */
+}
