@@ -36,8 +36,16 @@ button[kind="primary"]:hover {
 
 /* Résultat Spam animé */
 .spam-result {
-  animation: shake 0.5s infinite;
+    background: #dc2626;   /* rouge danger */
+    color: #ffffff;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+    animation: shake 0.5s infinite; /* اهتزاز مستمر */
+    border: 3px solid #ff0000; /* إطار أحمر */
 }
+
 
 
 /* Animation fade-in */
@@ -61,6 +69,7 @@ button[kind="primary"]:hover {
         animation: none ;
     }
 }
+
 
 
 
