@@ -47,7 +47,6 @@ def preprocess_text(text):
 # Inject CSS
 # -----------------------------
 
-st.markdown('<div class="spam-result">❌ SPAM — Attention danger !</div>', unsafe_allow_html=True)
 
 def inject_css(file_path="style.css"):
     try:
