@@ -11,17 +11,16 @@ section[data-testid="stTextArea"] textarea {
     border: 1px solid #3b82f6;
 }
 
-/* Bouton principal */
+/* Bouton principal (Predict + Download) */
 button[kind="primary"] {
-    background: #3b82f6;
-    color: #ffffff;
-    border-radius: 10px;
-    border: none;
-    transition: 0.3s;
-    animation: pulse 1s ease-in-out; /* أنيميشن للزر */
+    background: #3b82f6;   /* bleu pro */
+    color: #ffffff;        /* texte blanc */
+    border-radius: 10px;   /* coins arrondis */
+    border: none;          /* بلا إطار */
+    transition: 0.3s;      /* تغيير سلس عند hover */
 }
 button[kind="primary"]:hover {
-    background: #2563eb;
+    background: #2563eb;   /* bleu plus foncé */
 }
 
 /* Résultat Ham animé */
@@ -62,16 +61,9 @@ button[kind="primary"]:hover {
   100% { transform: translateX(0px); }
 }
 
-/* Animation pulse (button) */
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
 /* Désactiver animation en PDF/print */
 @media print {
-    .spam-result, .ham-result, button[kind="primary"] {
+    .spam-result, .ham-result {
         animation: none !important;
     }
 }
