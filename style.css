@@ -41,7 +41,7 @@ button[kind="primary"]:hover {
     border-radius: 8px;
     font-weight: bold;
     text-align: center;
-    animation: shake 0.5s infinite; /* اهتزاز مستمر */
+    animation: shake 0.5s ; /* اهتزاز مستمر */
     border: 3px solid #ff0000; /* إطار أحمر */
 }
 
@@ -68,6 +68,7 @@ button[kind="primary"]:hover {
         animation: none ;
     }
 }
+
 
 
 
