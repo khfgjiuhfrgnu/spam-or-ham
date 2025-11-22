@@ -42,7 +42,7 @@ button[kind="primary"]:hover {
     border-radius: 8px;
     font-weight: bold;
     text-align: center;
-    animation: shake 10s ease-in-out, fadeIn 0.8s ease-out;
+    animation: shake 10s ease-in-out, fadeIn 8s ease-out;
 }
 
 /* Animation fade-in */
@@ -66,5 +66,6 @@ button[kind="primary"]:hover {
         animation: none !important;
     }
 }
+
 
 
