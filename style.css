@@ -1,6 +1,6 @@
 /* HAM Animation */
 .ham-result {
-    background: #cfe8ff; /* Bleu clair */
+    background: #b3d9ff; /* أزرق فاتح */
     padding: 15px;
     border-radius: 10px;
     margin: 10px 0;
@@ -10,7 +10,7 @@
 
 /* SPAM Animation */
 .spam-result {
-    background: #b3d4ff; /* Bleu متوسط */
+    background: #66a3ff; /* أزرق متوسط/غامق */
     padding: 15px;
     border-radius: 10px;
     margin: 10px 0;
