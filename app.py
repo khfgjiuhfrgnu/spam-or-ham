@@ -33,14 +33,14 @@ def preprocess_text(text):
     return ' '.join(words)
 
 # -----------------------------
-# Inject optional CSS
+# Inject CSS
 # -----------------------------
 def inject_css(file_path="style.css"):
     try:
         with open(file_path) as f:
             st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
     except FileNotFoundError:
-        st.warning("style.css not found, using default style.")
+        st.warning("⚠️ style.css not found, using default style.")
 
 inject_css()
 
@@ -61,6 +61,7 @@ if st.button("Predict"):
         X_new = vectorizer.transform([processed_text])
         prediction = model.predict(X_new)[0]
 
+        # Résultat avec style.css
         if prediction == 0:
             st.markdown('<div class="ham-result">✔ Ham — Message normal</div>', unsafe_allow_html=True)
         else:
@@ -89,7 +90,7 @@ if uploaded_file:
 
             st.success("Batch prediction completed!")
 
-            # Affichage avec style
+            # Affichage avec style.css
             for _, row in df.iterrows():
                 if row['label'] == 'Ham':
                     st.markdown(f'<div class="ham-result">✔ Ham — {row[col_name]}</div>', unsafe_allow_html=True)
