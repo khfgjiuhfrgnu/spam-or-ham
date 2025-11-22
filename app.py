@@ -47,7 +47,7 @@ inject_css()
 # -----------------------------
 # Streamlit UI
 # -----------------------------
-st.title("📩 Detector de Spam or Ham ")
+st.title("📩 Spam or Ham Detector")
 st.write("Enter a message or upload a CSV to check if it's spam or ham.")
 
 # -----------------------------
@@ -63,16 +63,16 @@ if st.button("Predict"):
 
         # Résultat animé فقط للرسالة
         if prediction == 0:
-            st.markdown('<div class="ham-result">✔ Ham </div>')
+            st.markdown('<div class="ham-result">✔ Ham — Message normal</div>', unsafe_allow_html=True)
         else:
-            st.markdown('<div class="spam-result">❌ SPAM </div>')
+            st.markdown('<div class="spam-result">❌ SPAM — Attention danger !</div>', unsafe_allow_html=True)
     else:
         st.warning("⚠️ Please enter a message.")
 
 # -----------------------------
 # CSV batch prediction
 # -----------------------------
-st.subheader(" upload a data set")
+st.subheader("Or upload a CSV file for batch prediction")
 uploaded_file = st.file_uploader("Upload CSV", type=["csv"])
 
 if uploaded_file:
