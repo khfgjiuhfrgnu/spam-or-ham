@@ -60,8 +60,11 @@ if st.button("Predict"):
         processed_text = preprocess_text(user_input)
         X_new = vectorizer.transform([processed_text])
         prediction = model.predict(X_new)[0]
-        label = "Ham" if prediction == 0 else "Spam"
-        st.success(f"Prediction: {label}")
+
+        if prediction == 0:
+            st.markdown('<div class="ham-result">✔ Ham — Message normal</div>', unsafe_allow_html=True)
+        else:
+            st.markdown('<div class="spam-result">❌ SPAM — Attention danger !</div>', unsafe_allow_html=True)
     else:
         st.warning("⚠️ Please enter a message.")
 
@@ -83,8 +86,15 @@ if uploaded_file:
             X_vec = vectorizer.transform(df['processed'])
             df['prediction'] = model.predict(X_vec)
             df['label'] = df['prediction'].map({0: 'Ham', 1: 'Spam'})
+
             st.success("Batch prediction completed!")
-            st.dataframe(df[[col_name, 'label']], use_container_width=True)
+
+            # Affichage avec style
+            for _, row in df.iterrows():
+                if row['label'] == 'Ham':
+                    st.markdown(f'<div class="ham-result">✔ Ham — {row[col_name]}</div>', unsafe_allow_html=True)
+                else:
+                    st.markdown(f'<div class="spam-result">❌ SPAM — {row[col_name]}</div>', unsafe_allow_html=True)
 
             # Download button
             csv_out = df.to_csv(index=False).encode('utf-8')
