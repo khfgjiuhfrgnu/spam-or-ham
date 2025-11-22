@@ -47,7 +47,7 @@ inject_css()
 # -----------------------------
 # Streamlit UI
 # -----------------------------
-st.title("📩 Spam or Ham Detector")
+st.title("📩 Detector de Spam or Ham ")
 st.write("Enter a message or upload a CSV to check if it's spam or ham.")
 
 # -----------------------------
@@ -63,16 +63,16 @@ if st.button("Predict"):
 
         # Résultat animé فقط للرسالة
         if prediction == 0:
-            st.markdown('<div class="ham-result">✔ Ham — Message normal</div>', unsafe_allow_html=True)
+            st.markdown('<div class="ham-result">✔ Ham </div>', unsafe_allow_html=True)
         else:
-            st.markdown('<div class="spam-result">❌ SPAM — Attention danger !</div>', unsafe_allow_html=True)
+            st.markdown('<div class="spam-result">❌ SPAM </div>', unsafe_allow_html=True)
     else:
         st.warning("⚠️ Please enter a message.")
 
 # -----------------------------
 # CSV batch prediction
 # -----------------------------
-st.subheader("Or upload a CSV file for batch prediction")
+st.subheader("upload a data  file ")
 uploaded_file = st.file_uploader("Upload CSV", type=["csv"])
 
 if uploaded_file:
@@ -88,7 +88,7 @@ if uploaded_file:
             df['prediction'] = model.predict(X_vec)
             df['label'] = df['prediction'].map({0: 'Ham', 1: 'Spam'})
 
-            st.success("Batch prediction completed!")
+            st.success("import completed!")
 
             # Affichage avec style.css
             for _, row in df.iterrows():
