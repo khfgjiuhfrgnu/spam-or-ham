@@ -1,3 +1,40 @@
+/* Background général */
+html, body, [data-testid="stAppViewContainer"] {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%);
+}
+
+/* Icône principale */
+.page-icon {
+  color: #facc15;   /* jaune doré accent */
+}
+
+/* Icônes générales */
+svg {
+  fill: #ffffff;    /* blanc contrast */
+}
+
+/* Zone de texte */
+section[data-testid="stTextArea"] textarea {
+    background: #1e293b;   /* gris foncé */
+    color: #e5e7eb;        /* gris clair */
+    border-radius: 10px;
+    border: 1px solid #3b82f6; /* bleu accent */
+}
+
+/* Boutons principaux */
+button[kind="primary"] {
+    background: #3b82f6;   /* bleu pro */
+    color: #ffffff;        /* blanc */
+    border-radius: 10px;
+    border: none;
+    transition: 0.3s;
+}
+
+/* Effet hover sur bouton */
+button[kind="primary"]:hover {
+    background: #2563eb;   /* bleu plus foncé */
+}
+
 /* Résultat Spam */
 div.spam-result {
     background: #dc2626;   /* rouge danger */
@@ -6,8 +43,8 @@ div.spam-result {
     border-radius: 8px;
     font-weight: bold;
     text-align: center;
-    box-shadow: 0 0 20px #ff0000; /* glow rouge */
-    animation: shake 0.5s infinite; /* effet tremblement */
+    box-shadow: 0 0 20px #ff0000;
+    animation: shake 0.5s infinite;
 }
 
 /* Résultat Ham */
