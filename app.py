@@ -47,6 +47,8 @@ inject_css()
 # -----------------------------
 # Streamlit UI
 # -----------------------------
+st.title("\nréalisé par  khaled | Omar  | Ahmed")
+
 st.title("📩 Détecteur Spam ou Ham")
 st.write("Entrez un message ou uploadez un CSV pour vérifier s'il est spam ou ham.")
 
@@ -73,7 +75,7 @@ if st.markdown('<button class="predict-btn">Predict</button>', unsafe_allow_html
 # CSV batch prediction
 # -----------------------------
 st.subheader("Upload a CSV ")
-uploaded_file = st.file_uploader("Upload CSV", type=["csv"])
+uploaded_file = st.file_uploader("", type=["csv"])
 
 if uploaded_file:
     try:
@@ -102,4 +104,3 @@ if uploaded_file:
         st.error(f"Error reading CSV: {e}")
 
 
-st.title("réalisé par  khaled | Omar  | Ahmed")
