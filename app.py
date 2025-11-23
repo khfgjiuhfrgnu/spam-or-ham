@@ -47,21 +47,21 @@ inject_css()
 # -----------------------------
 # Streamlit UI
 # -----------------------------
-st.title("📩  Detecteur Spam or Ham ")
-st.write("Enter a message or upload a CSV to check if it's spam or ham.")
+st.title("📩 Détecteur Spam ou Ham")
+st.write("Entrez un message ou uploadez un CSV pour vérifier s'il est spam ou ham.")
 
 # -----------------------------
 # Individual message prediction
 # -----------------------------
 user_input = st.text_area("Message:")
 
-if st.button("Predict"):
+# زر Predict بكلاس خاص
+if st.markdown('<button class="predict-btn">Predict</button>', unsafe_allow_html=True):
     if user_input.strip():
         processed_text = preprocess_text(user_input)
         X_new = vectorizer.transform([processed_text])
         prediction = model.predict(X_new)[0]
 
-        # Résultat animé فقط للرسالة
         if prediction == 0:
             st.markdown('<div class="ham-result">✔ Ham </div>', unsafe_allow_html=True)
         else:
@@ -72,13 +72,12 @@ if st.button("Predict"):
 # -----------------------------
 # CSV batch prediction
 # -----------------------------
-st.subheader("upload a CSV")
-uploaded_file = st.file_uploader("", type=["csv"])
+st.subheader("Upload a CSV ")
+uploaded_file = st.file_uploader("Upload CSV", type=["csv"])
 
 if uploaded_file:
     try:
         df = pd.read_csv(uploaded_file)
-        # Ensure column exists
         if 'sms' not in df.columns and 'message' not in df.columns:
             st.error("CSV must contain a column named 'sms' or 'message'.")
         else:
@@ -88,17 +87,19 @@ if uploaded_file:
             df['prediction'] = model.predict(X_vec)
             df['label'] = df['prediction'].map({0: 'Ham', 1: 'Spam'})
 
-            st.success("upload completed")
+            st.success("upload completed!")
 
-            # Affichage avec style.css
             for _, row in df.iterrows():
                 if row['label'] == 'Ham':
                     st.markdown(f'<div class="ham-result">✔ Ham — {row[col_name]}</div>', unsafe_allow_html=True)
                 else:
                     st.markdown(f'<div class="spam-result">❌ SPAM — {row[col_name]}</div>', unsafe_allow_html=True)
 
-            # Download button
+            # Download button (عادي بلا أنيميشن)
             csv_out = df.to_csv(index=False).encode('utf-8')
             st.download_button("Download Predictions", csv_out, "predictions.csv", "text/csv")
     except Exception as e:
         st.error(f"Error reading CSV: {e}")
+
+
+st.title("réalisé par  khaled | Omar  | Ahmed")
