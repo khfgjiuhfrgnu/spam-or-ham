@@ -9,6 +9,7 @@ section[data-testid="stTextArea"] textarea {
     color: #e5e7eb;
     border-radius: 10px;
     border: 1px solid #3b82f6;
+    text_align:center;
 }
 
 /* Bouton Predict فقط */
@@ -78,5 +79,6 @@ button.predict-btn:hover {
         border: none !important;   /* تحيد الإطار */
     }
 }
+
 
 
