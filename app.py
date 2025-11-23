@@ -57,10 +57,10 @@ body, .stApp {
     background-color: #fee2e2;
     color: #991b1b;
     padding: 10px;
-    border-radius: 8px;
+    border-radius: 15px;
     margin: 8px 0;
     font-weight: bold;
-    animation: shake 0.5s ease-in-out;
+   animation: shake 1s ease-in-out infinite;  /* ← الآن يهتز بشكل مستمر */
 }
 
 @keyframes shake {
