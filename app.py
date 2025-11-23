@@ -8,7 +8,7 @@ from nltk.stem import PorterStemmer
 # -----------------------------
 # Télécharger NLTK resources
 # -----------------------------
-nltk.download('stopwords')
+nltk.download('stopwords', quiet=True)
 
 # -----------------------------
 # Load model and vectorizer
@@ -20,10 +20,10 @@ vectorizer = joblib.load('tfidf.pkl')
 # Preprocessing function
 # -----------------------------
 def preprocess_text(text):
-    text = text.lower()  
-    text = re.sub(r'[^\w\s]', '', text)  
-    text = re.sub(r'http\S+', '', text)  
-    text = re.sub(r'@\w+', '', text)  
+    text = text.lower()
+    text = re.sub(r'[^\w\s]', '', text)
+    text = re.sub(r'http\S+', '', text)
+    text = re.sub(r'@\w+', '', text)
     words = text.split()
     stop_words = set(stopwords.words('english'))
     words = [word for word in words if word not in stop_words]
@@ -32,21 +32,58 @@ def preprocess_text(text):
     return ' '.join(words)
 
 # -----------------------------
-# Inject CSS (اختياري)
+# Inject CSS
 # -----------------------------
-def inject_css(file_path="style.css"):
-    try:
-        with open(file_path) as f:
-            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-    except FileNotFoundError:
-        st.warning("⚠️ style.css not found, using default style.")
+css_code = """
+/* Ham result */
+.ham-result {
+    background-color: #a7f3d0;  /* أخضر فاتح */
+    color: #065f46;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 8px 0;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
 
-inject_css()
+/* Spam result */
+.spam-result {
+    background-color: #fee2e2;  /* أحمر فاتح */
+    color: #b91c1c;  /* نص + أيقونة أحمر داكن */
+    padding: 10px;
+    border-radius: 8px;
+    margin: 8px 0;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    animation: shake 1s ease-in-out infinite;  /* اهتزاز مستمر */
+}
+
+/* Shake animation */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-5px); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+    100% { transform: translateX(0); }
+}
+
+/* Confiance span */
+.ham-result span, 
+.spam-result span {
+    font-size: 0.9em;
+    font-weight: normal;
+    margin-left: 10px;
+}
+"""
+st.markdown(f"<style>{css_code}</style>", unsafe_allow_html=True)
 
 # -----------------------------
 # Streamlit UI
 # -----------------------------
-st.title("\nréalisé par  khaled | Omar  | Ahmed")
+st.title("\nréalisé par khaled | Omar | Ahmed")
 st.title("📩 Détecteur Spam ou Ham")
 st.write("Entrez un message pour vérifier s'il est spam ou ham.")
 
@@ -54,10 +91,12 @@ st.write("Entrez un message pour vérifier s'il est spam ou ham.")
 # Individual message prediction
 # -----------------------------
 user_input = st.text_area("Message:")
-predict_btn = st.button("Predict Message")  # زر Predict حقيقي
+predict_btn = st.button("Predict Message")
 
 if predict_btn:
-    if user_input.strip():
+    if not user_input.strip():
+        st.warning("⚠️ Please enter a message!")
+    else:
         processed_text = preprocess_text(user_input)
         X_new = vectorizer.transform([processed_text])
 
@@ -65,8 +104,12 @@ if predict_btn:
         confidence = model.predict_proba(X_new).max() * 100
 
         if prediction == 0:
-            st.markdown(f'<div class="ham-result">✔ Ham — Confiance: {confidence:.2f}%</div>', unsafe_allow_html=True)
+            st.markdown(
+                f'<div class="ham-result">✔ Ham — <span>Confiance: {confidence:.2f}%</span></div>', 
+                unsafe_allow_html=True
+            )
         else:
-            st.markdown(f'<div class="spam-result">❌ SPAM — Confiance: {confidence:.2f}%</div>', unsafe_allow_html=True)
-    else:
-        st.warning("⚠️ Please enter a message.")
+            st.markdown(
+                f'<div class="spam-result">❌ SPAM — <span>Confiance: {confidence:.2f}%</span></div>', 
+                unsafe_allow_html=True
+            )
