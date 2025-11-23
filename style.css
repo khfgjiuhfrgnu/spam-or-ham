@@ -11,19 +11,20 @@ section[data-testid="stTextArea"] textarea {
     border: 1px solid #3b82f6;
 }
 
+/* Bouton Predict فقط */
 button.predict-btn {
-    background: #3b82f6;
+    background: #3b82f6;   /* bleu pro */
     color: #ffffff;
     border-radius: 10px;
     border: none;
     padding: 8px 16px;
     cursor: pointer;
     transition: 0.3s;
+    animation: pulse 1s ease-in-out infinite; /* أنيميشن */
 }
 button.predict-btn:hover {
-    background: #2563eb;
+    background: #2563eb;   /* bleu plus foncé */
 }
-
 
 /* Résultat Ham animé */
 .ham-result {
@@ -63,10 +64,16 @@ button.predict-btn:hover {
   100% { transform: translateX(0px); }
 }
 
+/* Animation pulse (Predict button) */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
 /* Désactiver animation en PDF/print */
 @media print {
-    .spam-result, .ham-result {
+    .spam-result, .ham-result, button.predict-btn {
         animation: none !important;
     }
 }
-
