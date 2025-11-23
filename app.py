@@ -44,26 +44,28 @@ body, .stApp {
     background-color: #d1fae5;  /* أخضر فاتح */
 }
 
+/* Ham Result */
 .ham-result {
-    background-color: #d1fae5;
+    background-color: #a7f3d0;  /* أخضر فاتح أكتر للنصوص */
     color: #065f46;
-    padding: 10px;
-    border-radius: 15px;
-    margin: 8px 0;
-    font-weight: bold;
-}
-
-.spam-result {
-    background-color: #fee2e2;  /* خلفية فاتحة */
-    color: #b91c1c;             /* كل النص + أيقونات باللون الأحمر داكن */
     padding: 10px;
     border-radius: 8px;
     margin: 8px 0;
     font-weight: bold;
-    animation: shake 1s ease-in-out infinite;  /* اهتزاز مستمر */
 }
 
+/* Spam Result */
+.spam-result {
+    background-color: #fee2e2;
+    color: #991b1b;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 8px 0;
+    font-weight: bold;
+    animation: shake 0.5s ease-in-out;
+}
 
+/* Shake animation */
 @keyframes shake {
     0% { transform: translateX(0); }
     20% { transform: translateX(-5px); }
@@ -73,6 +75,7 @@ body, .stApp {
     100% { transform: translateX(0); }
 }
 
+/* Confiance number */
 .ham-result span, 
 .spam-result span {
     font-size: 0.9em;
@@ -81,12 +84,14 @@ body, .stApp {
     color: #374151;
 }
 
+/* Warning text */
 .warning-text {
-    color: #b91c1c; /* أحمر للنصوص التحذيرية */
+    color: #b91c1c;
     font-weight: bold;
 }
 """
 st.markdown(f"<style>{css_code}</style>", unsafe_allow_html=True)
+
 
 # -----------------------------
 # Streamlit UI
