@@ -12,7 +12,7 @@ import pandas as pd
 nltk.download('stopwords')
 
 # -----------------------------
-# Load model and vectorizer (training outputs)
+# Load model and vectorizer
 # -----------------------------
 model = joblib.load('spam_model.pkl')
 vectorizer = joblib.load('tfidf.pkl')
@@ -21,10 +21,10 @@ vectorizer = joblib.load('tfidf.pkl')
 # Preprocessing function
 # -----------------------------
 def preprocess_text(text):
-    text = text.lower()  # Lowercase
-    text = re.sub(r'[^\w\s]', '', text)  # Remove punctuation
-    text = re.sub(r'http\S+', '', text)  # Remove URLs
-    text = re.sub(r'@\w+', '', text)  # Remove mentions
+    text = text.lower()  
+    text = re.sub(r'[^\w\s]', '', text)  
+    text = re.sub(r'http\S+', '', text)  
+    text = re.sub(r'@\w+', '', text)  
     words = text.split()
     stop_words = set(stopwords.words('english'))
     words = [word for word in words if word not in stop_words]
@@ -48,7 +48,6 @@ inject_css()
 # Streamlit UI
 # -----------------------------
 st.title("\nréalisé par  khaled | Omar  | Ahmed")
-
 st.title("📩 Détecteur Spam ou Ham")
 st.write("Entrez un message ou uploadez un CSV pour vérifier s'il est spam ou ham.")
 
@@ -56,26 +55,20 @@ st.write("Entrez un message ou uploadez un CSV pour vérifier s'il est spam ou h
 # Individual message prediction
 # -----------------------------
 user_input = st.text_area("Message:")
+predict_btn = st.button("Predict Message")  # ← زر Predict حقيقي
 
-# زر Predict بكلاس خاص
-if st.markdown('<button class="predict-btn">Predict</button>', unsafe_allow_html=True):
+if predict_btn:
     if user_input.strip():
         processed_text = preprocess_text(user_input)
         X_new = vectorizer.transform([processed_text])
 
         prediction = model.predict(X_new)[0]
-        confidence = model.predict_proba(X_new).max() * 100   # ← إضافة الثقة
+        confidence = model.predict_proba(X_new).max() * 100
 
         if prediction == 0:
-            st.markdown(
-                f'<div class="ham-result">✔ Ham — Confiance: {confidence:.2f}%</div>',
-                unsafe_allow_html=True
-            )
+            st.markdown(f'<div class="ham-result">✔ Ham — Confiance: {confidence:.2f}%</div>', unsafe_allow_html=True)
         else:
-            st.markdown(
-                f'<div class="spam-result">❌ SPAM — Confiance: {confidence:.2f}%</div>',
-                unsafe_allow_html=True
-            )
+            st.markdown(f'<div class="spam-result">❌ SPAM  —   Confiance: {confidence:.2f}%</div>', unsafe_allow_html=True)
     else:
         st.warning("⚠️ Please enter a message.")
 
@@ -84,8 +77,9 @@ if st.markdown('<button class="predict-btn">Predict</button>', unsafe_allow_html
 # -----------------------------
 st.subheader("Upload a CSV ")
 uploaded_file = st.file_uploader("", type=["csv"])
+predict_csv_btn = st.button("Predict CSV")  # ← زر خاص للـ CSV
 
-if uploaded_file:
+if uploaded_file and predict_csv_btn:
     try:
         df = pd.read_csv(uploaded_file)
         if 'sms' not in df.columns and 'message' not in df.columns:
@@ -97,22 +91,16 @@ if uploaded_file:
             X_vec = vectorizer.transform(df['processed'])
 
             df['prediction'] = model.predict(X_vec)
-            df['confidence'] = model.predict_proba(X_vec).max(axis=1) * 100  # ← إضافة الثقة
+            df['confidence'] = model.predict_proba(X_vec).max(axis=1) * 100
             df['label'] = df['prediction'].map({0: 'Ham', 1: 'Spam'})
 
-            st.success("upload completed!")
+            st.success("Upload completed!")
 
             for _, row in df.iterrows():
                 if row['label'] == 'Ham':
-                    st.markdown(
-                        f'<div class="ham-result">✔ Ham — {row[col_name]} — Confiance: {row["confidence"]:.2f}%</div>',
-                        unsafe_allow_html=True
-                    )
+                    st.markdown(f'<div class="ham-result">✔ Ham — {row[col_name]} — Confiance: {row["confidence"]:.2f}%</div>', unsafe_allow_html=True)
                 else:
-                    st.markdown(
-                        f'<div class="spam-result">❌ SPAM — {row[col_name]} — Confiance: {row["confidence"]:.2f}%</div>',
-                        unsafe_allow_html=True
-                    )
+                    st.markdown(f'<div class="spam-result">❌ SPAM — {row[col_name]} — Confiance: {row["confidence"]:.2f}%</div>', unsafe_allow_html=True)
 
             # Download button
             csv_out = df.to_csv(index=False).encode('utf-8')
