@@ -39,6 +39,11 @@ def preprocess_text(text):
 # Inject CSS
 # -----------------------------
 css_code = """
+/* Background général */
+body, .stApp {
+    background-color: #d1fae5;  /* أخضر فاتح */
+}
+
 .ham-result {
     background-color: #d1fae5;
     color: #065f46;
