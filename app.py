@@ -48,7 +48,7 @@ body, .stApp {
     background-color: #d1fae5;
     color: #065f46;
     padding: 10px;
-    border-radius: 8px;
+    border-radius: 15px;
     margin: 8px 0;
     font-weight: bold;
 }
