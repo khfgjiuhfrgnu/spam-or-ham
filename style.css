@@ -71,9 +71,12 @@ button.predict-btn:hover {
   100% { transform: scale(1); }
 }
 
-/* Désactiver animation en PDF/print */
+/* Désactiver animation et border en PDF/print */
 @media print {
     .spam-result, .ham-result, button.predict-btn {
         animation: none !important;
+        border: none !important;   /* تحيد الإطار */
     }
 }
+
+
