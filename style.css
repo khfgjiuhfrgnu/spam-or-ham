@@ -11,17 +11,19 @@ section[data-testid="stTextArea"] textarea {
     border: 1px solid #3b82f6;
 }
 
-/* Bouton principal (Predict + Download) */
-button[kind="primary"] {
-    background: #3b82f6;   /* bleu pro */
-    color: #ffffff;        /* texte blanc */
-    border-radius: 10px;   /* coins arrondis */
-    border: none;          /* بلا إطار */
-    transition: 0.3s;      /* تغيير سلس عند hover */
+button.predict-btn {
+    background: #3b82f6;
+    color: #ffffff;
+    border-radius: 10px;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: 0.3s;
 }
-button[kind="primary"]:hover {
-    background: #2563eb;   /* bleu plus foncé */
+button.predict-btn:hover {
+    background: #2563eb;
 }
+
 
 /* Résultat Ham animé */
 .ham-result {
@@ -67,3 +69,4 @@ button[kind="primary"]:hover {
         animation: none !important;
     }
 }
+
