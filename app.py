@@ -4,7 +4,6 @@ import re
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
-import pandas as pd
 
 # -----------------------------
 # Télécharger NLTK resources
@@ -33,7 +32,7 @@ def preprocess_text(text):
     return ' '.join(words)
 
 # -----------------------------
-# Inject CSS
+# Inject CSS (اختياري)
 # -----------------------------
 def inject_css(file_path="style.css"):
     try:
@@ -49,13 +48,13 @@ inject_css()
 # -----------------------------
 st.title("\nréalisé par  khaled | Omar  | Ahmed")
 st.title("📩 Détecteur Spam ou Ham")
-st.write("Entrez un message ou uploadez un CSV pour vérifier s'il est spam ou ham.")
+st.write("Entrez un message pour vérifier s'il est spam ou ham.")
 
 # -----------------------------
 # Individual message prediction
 # -----------------------------
 user_input = st.text_area("Message:")
-predict_btn = st.button("Predict Message")  # ← زر Predict حقيقي
+predict_btn = st.button("Predict Message")  # زر Predict حقيقي
 
 if predict_btn:
     if user_input.strip():
@@ -68,42 +67,6 @@ if predict_btn:
         if prediction == 0:
             st.markdown(f'<div class="ham-result">✔ Ham — Confiance: {confidence:.2f}%</div>', unsafe_allow_html=True)
         else:
-            st.markdown(f'<div class="spam-result">❌ SPAM  —   Confiance: {confidence:.2f}%</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="spam-result">❌ SPAM — Confiance: {confidence:.2f}%</div>', unsafe_allow_html=True)
     else:
         st.warning("⚠️ Please enter a message.")
-
-# -----------------------------
-# CSV batch prediction
-# -----------------------------
-st.subheader("Upload a CSV ")
-uploaded_file = st.file_uploader("", type=["csv"])
-predict_csv_btn = st.button("Predict CSV")  # ← زر خاص للـ CSV
-
-if uploaded_file and predict_csv_btn:
-    try:
-        df = pd.read_csv(uploaded_file)
-        if 'sms' not in df.columns and 'message' not in df.columns:
-            st.error("CSV must contain a column named 'sms' or 'message'.")
-        else:
-            col_name = 'sms' if 'sms' in df.columns else 'message'
-
-            df['processed'] = df[col_name].astype(str).apply(preprocess_text)
-            X_vec = vectorizer.transform(df['processed'])
-
-            df['prediction'] = model.predict(X_vec)
-            df['confidence'] = model.predict_proba(X_vec).max(axis=1) * 100
-            df['label'] = df['prediction'].map({0: 'Ham', 1: 'Spam'})
-
-            st.success("Upload completed!")
-
-            for _, row in df.iterrows():
-                if row['label'] == 'Ham':
-                    st.markdown(f'<div class="ham-result">✔ Ham — {row[col_name]} — Confiance: {row["confidence"]:.2f}%</div>', unsafe_allow_html=True)
-                else:
-                    st.markdown(f'<div class="spam-result">❌ SPAM — {row[col_name]} — Confiance: {row["confidence"]:.2f}%</div>', unsafe_allow_html=True)
-
-            # Download button
-            csv_out = df.to_csv(index=False).encode('utf-8')
-            st.download_button("Download Predictions", csv_out, "predictions.csv", "text/csv")
-    except Exception as e:
-        st.error(f"Error reading CSV: {e}")
