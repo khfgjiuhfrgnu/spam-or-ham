@@ -27,29 +27,6 @@ button.predict-btn:hover {
     background: #2563eb;   /* bleu plus foncé */
 }
 
-/* Résultat Ham animé */
-.ham-result {
-    background: #22c55e;
-    color: #ffffff;
-    padding: 12px;
-    border-radius: 8px;
-    font-weight: bold;
-    text-align: center;
-    animation: fadeIn 0.8s ease-out;
-}
-
-/* Résultat Spam animé */
-.spam-result {
-    background: #dc2626;
-    color: #ffffff;
-    padding: 12px;
-    border-radius: 8px;
-    font-weight: bold;
-    text-align: center;
-    border: 3px solid #ff0000; /* إطار أحمر */
-    animation: shake 0.5s ease-in-out, fadeIn 0.8s ease-out;
-}
-
 /* Animation fade-in */
 @keyframes fadeIn {
   from { opacity: 0; }
@@ -79,6 +56,7 @@ button.predict-btn:hover {
         border: none !important;   /* تحيد الإطار */
     }
 }
+
 
 
 
