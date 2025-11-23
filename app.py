@@ -54,14 +54,15 @@ body, .stApp {
 }
 
 .spam-result {
-    background-color: #fee2e2;
-    color: #991b1b;
+    background-color: #fee2e2;  /* خلفية فاتحة */
+    color: #b91c1c;             /* كل النص + أيقونات باللون الأحمر داكن */
     padding: 10px;
-    border-radius: 15px;
+    border-radius: 8px;
     margin: 8px 0;
     font-weight: bold;
-   animation: shake 1s ease-in-out infinite;  /* ← الآن يهتز بشكل مستمر */
+    animation: shake 1s ease-in-out infinite;  /* اهتزاز مستمر */
 }
+
 
 @keyframes shake {
     0% { transform: translateX(0); }
