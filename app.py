@@ -8,17 +8,13 @@ from nltk.stem import PorterStemmer
 # -----------------------------
 # Télécharger NLTK resources
 # -----------------------------
-nltk.download('stopwords', quiet=True)
+nltk.download('stopwords')
 
 # -----------------------------
-# Load model and vectorizer avec try/except
+# Load model and vectorizer
 # -----------------------------
-try:
-    model = joblib.load('spam_model.pkl')
-    vectorizer = joblib.load('tfidf.pkl')
-except Exception as e:
-    st.error(f"Erreur lors du chargement du modèle: {e}")
-    st.stop()
+model = joblib.load('spam_model.pkl')
+vectorizer = joblib.load('tfidf.pkl')
 
 # -----------------------------
 # Preprocessing function
@@ -36,51 +32,16 @@ def preprocess_text(text):
     return ' '.join(words)
 
 # -----------------------------
-# Inject CSS
+# Inject CSS (اختياري)
 # -----------------------------
-css_code = """
-.ham-result {
-    background-color: #d1fae5;
-    color: #065f46;
-    padding: 10px;
-    border-radius: 8px;
-    margin: 8px 0;
-    font-weight: bold;
-}
+def inject_css(file_path="style.css"):
+    try:
+        with open(file_path) as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+    except FileNotFoundError:
+        st.warning("⚠️ style.css not found, using default style.")
 
-.spam-result {
-    background-color: #fee2e2;
-    color: #991b1b;
-    padding: 10px;
-    border-radius: 8px;
-    margin: 8px 0;
-    font-weight: bold;
-    animation: shake 0.5s ease-in-out;
-}
-
-@keyframes shake {
-    0% { transform: translateX(0); }
-    20% { transform: translateX(-5px); }
-    40% { transform: translateX(5px); }
-    60% { transform: translateX(-5px); }
-    80% { transform: translateX(5px); }
-    100% { transform: translateX(0); }
-}
-
-.ham-result span, 
-.spam-result span {
-    font-size: 0.9em;
-    font-weight: normal;
-    margin-left: 5px;
-    color: #374151;
-}
-
-.warning-text {
-    color: #b91c1c; /* أحمر للنصوص التحذيرية */
-    font-weight: bold;
-}
-"""
-st.markdown(f"<style>{css_code}</style>", unsafe_allow_html=True)
+inject_css()
 
 # -----------------------------
 # Streamlit UI
@@ -96,9 +57,7 @@ user_input = st.text_area("Message:")
 predict_btn = st.button("Predict Message")  # زر Predict حقيقي
 
 if predict_btn:
-    if not user_input.strip():
-        st.markdown('<div class="warning-text">⚠️ Please enter a message!</div>', unsafe_allow_html=True)
-    else:
+    if user_input.strip():
         processed_text = preprocess_text(user_input)
         X_new = vectorizer.transform([processed_text])
 
@@ -106,6 +65,8 @@ if predict_btn:
         confidence = model.predict_proba(X_new).max() * 100
 
         if prediction == 0:
-            st.markdown(f'<div class="ham-result">✔ Ham — <span>Confiance: {confidence:.2f}%</span></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="ham-result">✔ Ham — Confiance: {confidence:.2f}%</div>', unsafe_allow_html=True)
         else:
-            st.markdown(f'<div class="spam-result">❌ SPAM — <span>Confiance: {confidence:.2f}%</span></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="spam-result">❌ SPAM — Confiance: {confidence:.2f}%</div>', unsafe_allow_html=True)
+    else:
+        st.warning("⚠️ Please enter a message.")
