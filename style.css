@@ -10,6 +10,35 @@ section[data-testid="stTextArea"] textarea {
     border-radius: 10px;
     border: 1px solid #3b82f6;
     text_align:center;
+    /* Ham Result */
+.ham-result {
+    background-color: #d1fae5;  /* أخضر فاتح */
+    color: #065f46;              /* أخضر داكن للنص */
+    padding: 10px;
+    border-radius: 8px;
+    margin: 8px 0;
+    font-weight: bold;
+}
+
+/* Spam Result */
+.spam-result {
+    background-color: #fee2e2;  /* أحمر فاتح */
+    color: #991b1b;             /* أحمر داكن للنص */
+    padding: 10px;
+    border-radius: 8px;
+    margin: 8px 0;
+    font-weight: bold;
+}
+
+/* Confiance number */
+.ham-result span, 
+.spam-result span {
+    font-size: 0.9em;
+    font-weight: normal;
+    margin-left: 5px;
+    color: #374151; /* رمادي للنص الصغير */
+}
+
 }
 
 /* Bouton Predict فقط */
