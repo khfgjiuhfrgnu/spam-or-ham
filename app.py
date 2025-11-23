@@ -3,69 +3,57 @@ import joblib
 import re
 import nltk
 from nltk.corpus import stopwords
-from nltk.stem import PorterStemmer
+import pandas as pd
 
-# -----------------------------
-# Télécharger NLTK resources
-# -----------------------------
 nltk.download('stopwords', quiet=True)
 
 # -----------------------------
-# Load model and vectorizer
+# Load model & vectorizer
 # -----------------------------
-model = joblib.load('spam_model.pkl')
-vectorizer = joblib.load('tfidf.pkl')
+try:
+    model = joblib.load('spam_model.pkl')
+    vectorizer = joblib.load('vectorizer.pkl')
+except Exception as e:
+    st.error(f"Erreur loading model/vectorizer: {e}")
+    st.stop()
 
 # -----------------------------
 # Preprocessing function
 # -----------------------------
 def preprocess_text(text):
-    text = text.lower()
-    text = re.sub(r'[^\w\s]', '', text)
-    text = re.sub(r'http\S+', '', text)
-    text = re.sub(r'@\w+', '', text)
+    text = str(text).lower()
+    text = re.sub(r"http\S+|www\S+", "", text)
+    text = re.sub(r"[^\w\s]", "", text)
     words = text.split()
     stop_words = set(stopwords.words('english'))
-    words = [word for word in words if word not in stop_words]
-    stemmer = PorterStemmer()
-    words = [stemmer.stem(word) for word in words]
+    words = [w for w in words if w not in stop_words]
     return ' '.join(words)
 
 # -----------------------------
-# Inject CSS
+# CSS
 # -----------------------------
-css_code = """
-/* Background général */
-body, .stApp {
-    background-color: #d1fae5;  /* أخضر فاتح */
-}
+css = """
+body, .stApp { background-color: #d1fae5; }
 
-/* Ham result */
 .ham-result {
-    background-color: #a7f3d0;  /* أخضر فاتح أكثر للنصوص */
+    background-color: #a7f3d0;
     color: #065f46;
     padding: 10px;
     border-radius: 8px;
     margin: 8px 0;
     font-weight: bold;
-    display: flex;
-    align-items: center;
 }
 
-/* Spam result */
 .spam-result {
-    background-color: #fee2e2;  /* أحمر فاتح */
-    color: #b91c1c;  /* نص + أيقونة أحمر داكن */
+    background-color: #fee2e2;
+    color: #991b1b;
     padding: 10px;
     border-radius: 8px;
     margin: 8px 0;
     font-weight: bold;
-    display: flex;
-    align-items: center;
-    animation: shake 1s ease-in-out infinite;  /* اهتزاز مستمر */
+    animation: shake 0.5s ease-in-out infinite;
 }
 
-/* Shake animation */
 @keyframes shake {
     0% { transform: translateX(0); }
     20% { transform: translateX(-5px); }
@@ -75,46 +63,62 @@ body, .stApp {
     100% { transform: translateX(0); }
 }
 
-/* Confiance span */
-.ham-result span, 
-.spam-result span {
+span.confiance {
     font-size: 0.9em;
     font-weight: normal;
-    margin-left: 10px;
+    margin-left: 5px;
 }
 """
-st.markdown(f"<style>{css_code}</style>", unsafe_allow_html=True)
+st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
 
 # -----------------------------
 # Streamlit UI
 # -----------------------------
-st.title("\nréalisé par khaled | Omar | Ahmed")
 st.title("📩 Détecteur Spam ou Ham")
-st.write("Entrez un message pour vérifier s'il est spam ou ham.")
+st.write("Entrez un message ou uploadez un CSV pour vérifier spam/ham.")
 
 # -----------------------------
-# Individual message prediction
+# Predict single message (avec confidence)
 # -----------------------------
 user_input = st.text_area("Message:")
-predict_btn = st.button("Predict Message")
-
-if predict_btn:
-    if not user_input.strip():
-        st.warning("⚠️ Please enter a message!")
-    else:
-        processed_text = preprocess_text(user_input)
-        X_new = vectorizer.transform([processed_text])
-
+if st.button("Predict Message"):
+    if user_input.strip():
+        processed = preprocess_text(user_input)
+        X_new = vectorizer.transform([processed])
         prediction = model.predict(X_new)[0]
         confidence = model.predict_proba(X_new).max() * 100
 
         if prediction == 0:
-            st.markdown(
-                f'<div class="ham-result">✔ Ham — <span>Confiance: {confidence:.2f}%</span></div>', 
-                unsafe_allow_html=True
-            )
+            st.markdown(f'<div class="ham-result">✔ Ham — <span class="confiance">{confidence:.2f}%</span></div>', unsafe_allow_html=True)
         else:
-            st.markdown(
-                f'<div class="spam-result">❌ SPAM — <span>Confiance: {confidence:.2f}%</span></div>', 
-                unsafe_allow_html=True
-            )
+            st.markdown(f'<div class="spam-result">❌ SPAM — <span class="confiance">{confidence:.2f}%</span></div>', unsafe_allow_html=True)
+    else:
+        st.warning("⚠️ Please enter a message!")
+
+# -----------------------------
+# Predict CSV (sans confidence)
+# -----------------------------
+uploaded_file = st.file_uploader("Upload CSV", type=['csv'])
+if uploaded_file:
+    if st.button("Predict CSV"):
+        try:
+            df = pd.read_csv(uploaded_file)
+            col_name = 'sms' if 'sms' in df.columns else 'message' if 'message' in df.columns else None
+            if not col_name:
+                st.error("CSV doit contenir une colonne 'sms' ou 'message'")
+            else:
+                df['processed'] = df[col_name].astype(str).apply(preprocess_text)
+                X_vec = vectorizer.transform(df['processed'])
+                df['prediction'] = model.predict(X_vec)
+                df['label'] = df['prediction'].map({0:'Ham',1:'Spam'})
+
+                for _, row in df.iterrows():
+                    if row['label']=='Ham':
+                        st.markdown(f'<div class="ham-result">✔ Ham — {row[col_name]}</div>', unsafe_allow_html=True)
+                    else:
+                        st.markdown(f'<div class="spam-result">❌ SPAM — {row[col_name]}</div>', unsafe_allow_html=True)
+
+                csv_out = df.drop(columns=['processed','prediction']).to_csv(index=False).encode('utf-8')
+                st.download_button("Download Predictions CSV", csv_out, "predictions.csv", "text/csv")
+        except Exception as e:
+            st.error(f"Erreur CSV: {e}")
