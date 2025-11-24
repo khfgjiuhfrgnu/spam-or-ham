@@ -93,10 +93,10 @@ st.markdown('<h1 style="color: orange; text-align: center;">réalisé par Khaled
 
 # عنوان باللون الأزرق
 st.markdown('<h1 style="color: #1E90FF; text-align: center;"> 📩 Détecteur Spam ou Ham </h1>', unsafe_allow_html=True)
-
+st.markdown('<h1 style="color: #1E90FF; text-align: center;"> Entrez un message pour vérifier s'il est spam ou ham: </h1>', unsafe_allow_html=True)
 
 # Predict single message
-user_input = st.text_area("Entrez un message pour vérifier s'il est spam ou ham:", max_chars=1000)
+user_input = st.text_area("", max_chars=1000)
 if st.button("Predict Message"):
     if user_input.strip():
         processed = preprocess_text(user_input)
