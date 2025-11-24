@@ -1,7 +1,7 @@
 # Spam Detector - Mini Project
 
 Project structure:
-- train_model.py  -> script to train a logistic regression model and save `spam_model.pkl` and `tfidf.pkl`.
+- train_model.py  -> script to train a logistic regression model and save `spam_model.pkl` and `tfidf.pkl` , 'vectorizer'.
 - app.py          -> Streamlit app to input a message and predict Spam/Ham.
 - spam_ham_dataset.csv        -> small sample dataset included for quick test (replace with full SMS Spam Collection Dataset for better results).
   
