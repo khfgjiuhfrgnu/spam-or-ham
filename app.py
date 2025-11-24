@@ -129,4 +129,3 @@ uploaded_file = st.file_uploader("Upload CSV file", type=["csv"])
 if uploaded_file:
     import pandas as pd
     df = pd.read_csv(uploaded_file)
-    st.dataframe(df.head())
