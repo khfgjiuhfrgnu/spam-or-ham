@@ -3,8 +3,8 @@
 Project structure:
 - train_model.py  -> script to train a logistic regression model and save `spam_model.pkl` and `tfidf.pkl`.
 - app.py          -> Streamlit app to input a message and predict Spam/Ham.
-- spam.csv        -> small sample dataset included for quick test (replace with full SMS Spam Collection Dataset for better results).
-- Mini projet NLP- 5.pdf -> project brief (copied from your upload).
+- spam_ham_dataset.csv        -> small sample dataset included for quick test (replace with full SMS Spam Collection Dataset for better results).
+  
 
 Quick start:
 1. (Optional) create a virtualenv and install dependencies:
