@@ -155,10 +155,8 @@ st.markdown(
 
 # Headers
 st.markdown('<h1 class="app-title">📩 Détecteur Spam ou Ham</h1>', unsafe_allow_html=True)
-st.markdown('<div class="app-subtitle">Entrez un message pour vérifier s\'il est spam ou ham</div>', unsafe_allow_html=True)
-
 # Input
-user_input = st.text_area("", max_chars=1000, placeholder="Tapez votre message ici...")
+user_input = st.text_area("Entrez un message pour vérifier s'il est spam ou ham", max_chars=1000, placeholder="Tapez votre message ici...")
 
 # Predict button
 if st.button("Predict Message"):
