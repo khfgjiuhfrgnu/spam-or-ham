@@ -42,7 +42,7 @@ st.markdown(
 
     /* Title styling */
     .app-title {
-        color: #1E90FF;
+        color: red;
         text-align: center;
         font-size: 2rem;
         font-weight: 800;
