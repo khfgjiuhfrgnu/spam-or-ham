@@ -30,6 +30,7 @@ def preprocess_text(text):
     return ' '.join(words)
 
 # Global CSS (professional UI + cybersecurity-style alerts)
+st.markdown('<div class="footer">📌 Réalisé par Khaled __ Omar __ Ahmed — Projet Spam Detector</div>', unsafe_allow_html=True)
 st.markdown(
     """
     <style>
@@ -157,7 +158,7 @@ st.markdown('<h1 class="app-title">📩 Détecteur Spam ou Ham</h1>', unsafe_all
 st.markdown('<div class="app-subtitle">Entrez un message pour vérifier s\'il est spam ou ham</div>', unsafe_allow_html=True)
 
 # Input
-user_input = st.text_area("Message", max_chars=1000, placeholder="Tapez votre message ici...")
+user_input = st.text_area("", max_chars=1000, placeholder="Tapez votre message ici...")
 
 # Predict button
 if st.button("Predict Message"):
@@ -219,5 +220,5 @@ if uploaded_file:
     except Exception as e:
         st.error(f"Erreur lecture CSV: {e}")
 # Footer / حقوق
-st.markdown('<div class="footer">📌 Réalisé par Khaled __ Omar __ Ahmed — Projet Spam Detector</div>', unsafe_allow_html=True)
+
 st.markdown('<div class="footer"> © 2025 Projet Spam Detector — Tous droits réservés</div>', unsafe_allow_html=True)
