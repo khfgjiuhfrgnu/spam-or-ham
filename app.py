@@ -35,7 +35,7 @@ st.markdown(
     <style>
     /* لون الخلفية كامل الصفحة */
     .stApp {
-        background-color: #dbeeff;  /* أزرق فاتح */
+        background-color: red;  /* أزرق فاتح */
     }
 
     /* صندوق HAM */
