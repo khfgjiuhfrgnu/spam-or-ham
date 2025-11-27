@@ -28,56 +28,78 @@ def preprocess_text(text):
     return ' '.join(words)
 
 
-st.set_page_config(page_title="Détecteur Spam ou Ham",
-                   page_icon="📧",
-                   layout="centered")
+# لون الخلفية كامل الصفحة
+st.markdown(
+    """
+    <style>
+    /* لون الخلفية كامل الصفحة */
+    .stApp {
+        background-color: green;  /* أزرق فاتح */
+    }
 
-# --- CSS PERSONNALISÉ ---
-st.markdown("""
-<style>
-body {
-    font-family: 'Inter', sans-serif;
-}
-.main {
-    background: linear-gradient(135deg, #155799, #159957);
-}
-h1, h2, h3, label {
-    color: white !important;
-}
-textarea {
-    border-radius: 12px !important;
-    border: 2px solid rgba(255,255,255,0.35) !important;
-    background-color: rgba(255,255,255,0.15) !important;
-    color: white !important;
-    font-size: 16px !important;
-}
-div[data-testid="stFileUploader"] section {
-    background-color: rgba(255,255,255,0.12);
-    border-radius: 12px;
-    padding: 10px;
-}
-.stButton > button {
-    background-color: #0c6efd !important;
-    border-radius: 8px !important;
-    padding: 10px 20px;
-    color: white;
-    font-size: 16px;
-}
-</style>
-""", unsafe_allow_html=True)
+    /* صندوق HAM */
+    .ham-result {
+        background-color: #4ade80;  /* أخضر فاتح */
+        color: #065f46;
+        padding: 10px;
+        border-radius: 8px;
+        margin: 8px 0;
+        font-weight: bold;
+        text-align: center;
+    }
 
-st.title("📧 Détecteur Spam ou Ham")
-st.write("Entrez un message pour vérifier s’il est spam ou ham.")
+    /* صندوق SPAM */
+    .spam-result {
+        background-color: #f87171;  /* أحمر فاتح */
+        color: #991b1b;
+        padding: 10px;
+        border-radius: 8px;
+        margin: 8px 0;
+        font-weight: bold;
+        animation: shake 0.5s ease-in-out infinite;
+        text-align: center;
+    }
 
-message = st.text_area("Message :", max_chars=1000)
+    @keyframes shake {
+        0% { transform: translateX(0); }
+        20% { transform: translateX(-5px); }
+        40% { transform: translateX(5px); }
+        60% { transform: translateX(-5px); }
+        80% { transform: translateX(5px); }
+        100% { transform: translateX(0); }
+    }
 
-if st.button("🔍 Prédire"):
-    st.success("Exemple : ham (ici vous mettrez votre modèle)")
-    
-uploaded = st.file_uploader("Ou importer un fichier CSV :", type=["csv"])
-if uploaded:
-    st.success("CSV bien reçu")
+    span.confiance {
+        font-size: 0.9em;
+        font-weight: normal;
+        margin-left: 5px;
+        display: inline-block;
+    }
 
+    @media print {
+        .spam-result, .ham-result {
+            animation: none !important;
+        }
+    }
+    </style>
+    """, unsafe_allow_html=True
+)
+
+
+# عنوان باللون الأزرق
+st.markdown('<h1 style="color: orange; text-align: center;">réalisé par Khaled  __   Omar  __ Ahmed</h1>', unsafe_allow_html=True)
+
+
+# عنوان باللون الأزرق
+st.markdown('<h1 style="color: #1E90FF; text-align: center;"> 📩 Détecteur Spam ou Ham </h1>', unsafe_allow_html=True)
+st.markdown(
+    """
+    <h1 style="color: #1E90FF; text-align: center;">
+        Entrez un message pour vérifier s'il est spam ou ham
+    </h1>
+    """,
+    unsafe_allow_html=True
+)
 
 # Predict single message
 user_input = st.text_area("", max_chars=1000)
