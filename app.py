@@ -218,9 +218,13 @@ if uploaded_file:
         st.dataframe(df)
     except Exception as e:
         st.error(f"Erreur lecture CSV: {e}")
+# Footer / حقوق
+st.markdown(
+    <div class="footer">
+        📌 Réalisé par <span>Khaled</span> __ <span>Omar</span> __ <span>Ahmed</span><br>
+        © 2025 Projet Spam Detector — Tous droits réservés
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
-# Footer
-st.markdown('<div class="footer">
-        📌 Réalisé par <span>KHALED</span> __ <span>OMAR</span> __ <span>AHMED</span><br>
-        © 2025  Spam Detector — Tous droits réservés
-</div>', unsafe_allow_html=True)
