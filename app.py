@@ -219,12 +219,5 @@ if uploaded_file:
     except Exception as e:
         st.error(f"Erreur lecture CSV: {e}")
 # Footer / حقوق
-st.markdown(
-    <div class="footer">
-        📌 Réalisé par <span>Khaled</span> __ <span>Omar</span> __ <span>Ahmed</span><br>
-        © 2025 Projet Spam Detector — Tous droits réservés
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
+st.markdown('<div class="footer">📌 Réalisé par Khaled __ Omar __ Ahmed — Projet Spam Detector</div>', unsafe_allow_html=True)
+st.markdown('<div class="footer"> © 2025 Projet Spam Detector — Tous droits réservés</div>', unsafe_allow_html=True)
