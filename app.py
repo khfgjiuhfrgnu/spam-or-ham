@@ -145,6 +145,13 @@ st.markdown(
         .spam-background { background: #ffffff !important; }
     }
     </style>
+
+    
+    <div class="footer">
+        📌 Réalisé par <span>Khaled</span> __ <span>Omar</span> __ <span>Ahmed</span><br>
+        © 2025  Spam Detector — Tous droits réservés
+    </div>
+    
     """,
     unsafe_allow_html=True
 )
