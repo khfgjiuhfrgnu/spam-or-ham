@@ -41,9 +41,11 @@ st.markdown(
         to { opacity: 1; transform: translateY(0); }
     }
 
+    
+
     /* صناديق النتائج مع دمج fade-in */
     .ham-result {
-        background-color: #d1fae5;
+        background-color: ;
         color: #065f46;
         padding: 15px;
         border-radius: 10px;
@@ -52,17 +54,22 @@ st.markdown(
         text-align: center;
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
-
     .spam-result {
-        background-color: red;
-        color: #991b1b;
-        padding: 15px;
+        background-color: #ff0000;  /* أحمر قوي */
+        color: #fff;                /* النص أبيض */
+        padding: 20px;
         border-radius: 10px;
         margin: 10px 0;
         font-weight: bold;
         text-align: center;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        animation: shake 4s ease-in-out infinite;
+        box-shadow: 0 0 20px rgba(255,0,0,0.8); /* ظل أحمر قوي */
+        animation: pulse 1s infinite; /* حركة تحذير */
+    }
+      /* Animation pulse */
+    @keyframes pulse {
+        0% { box-shadow: 0 0 10px rgba(255,0,0,0.6); }
+        50% { box-shadow: 0 0 30px rgba(255,0,0,1); }
+        100% { box-shadow: 0 0 10px rgba(255,0,0,0.6); }
     }
     </style>
     """,
