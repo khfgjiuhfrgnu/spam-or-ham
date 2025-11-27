@@ -31,103 +31,45 @@ def preprocess_text(text):
 st.markdown(
     """
     <style>
-    /* لون الخلفية كامل الصفحة */
-    .stApp {
-        background-color: green;  /* خلفية خضراء */
+    /* Animation Fade-in */
+    .fade-in {
+        animation: fadeIn 1s ease-in-out;
     }
 
-    /* صندوق HAM */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* صناديق النتائج مع دمج fade-in */
     .ham-result {
-        background-color: #4ade80;  /* أخضر فاتح */
+        background-color: #d1fae5;
         color: #065f46;
-        padding: 10px;
-        border-radius: 8px;
-        margin: 8px 0;
+        padding: 15px;
+        border-radius: 10px;
+        margin: 10px 0;
         font-weight: bold;
         text-align: center;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
 
-    /* صندوق SPAM */
     .spam-result {
-        background-color: #f87171;  /* أحمر فاتح */
+        background-color: #fee2e2;
         color: #991b1b;
-        padding: 10px;
-        border-radius: 8px;
-        margin: 8px 0;
+        padding: 15px;
+        border-radius: 10px;
+        margin: 10px 0;
         font-weight: bold;
-        animation: shake 0.5s ease-in-out infinite;
         text-align: center;
-    }
-
-    @keyframes shake {
-        0% { transform: translateX(0); }
-        20% { transform: translateX(-5px); }
-        40% { transform: translateX(5px); }
-        60% { transform: translateX(-5px); }
-        80% { transform: translateX(5px); }
-        100% { transform: translateX(0); }
-    }
-
-    span.confiance {
-        font-size: 0.9em;
-        font-weight: normal;
-        margin-left: 5px;
-        display: inline-block;
-    }
-
-    @media print {
-        .spam-result, .ham-result {
-            animation: none !important;
-        }
-    }
-
-    /* ====== أزرار احترافية ====== */
-    div.stButton > button {
-        background-color: #1E90FF;   /* أزرق */
-        color: white;
-        border: none;
-        padding: 12px 24px;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-    }
-
-    div.stButton > button:hover {
-        background-color: #0d6efd;   /* أزرق أغمق */
-        transform: translateY(-2px);
-        box-shadow: 0 6px 10px rgba(0,0,0,0.25);
-    }
-
-    div.stButton > button:active {
-        background-color: #0b5ed7;
-        transform: translateY(0);
-        box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-    }
-
-    /* زر أخضر (مثلاً للتأكيد أو HAM) */
-    .btn-green {
-        background-color: #22c55e !important;
-        color: white !important;
-    }
-
-    /* زر أحمر (مثلاً للتحذير أو SPAM) */
-    .btn-red {
-        background-color: #ef4444 !important;
-        color: white !important;
-    }
-
-    /* زر برتقالي (مثلاً لإعادة المحاولة أو خيار إضافي) */
-    .btn-orange {
-        background-color: #f97316 !important;
-        color: white !important;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        animation: shake 0.5s ease-in-out infinite;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
+
+
 
 
 # Predict single message
