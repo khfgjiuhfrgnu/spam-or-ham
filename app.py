@@ -146,11 +146,7 @@ st.markdown(
     }
     </style>
 
-    
-    <div class="footer">
-        📌 Réalisé par <span>Khaled</span> __ <span>Omar</span> __ <span>Ahmed</span><br>
-        © 2025  Spam Detector — Tous droits réservés
-    </div>
+
     
     """,
     unsafe_allow_html=True
@@ -224,4 +220,7 @@ if uploaded_file:
         st.error(f"Erreur lecture CSV: {e}")
 
 # Footer
-st.markdown('<div class="footer">📌 Réalisé par Khaled __ Omar __ Ahmed — Projet Spam Detector</div>', unsafe_allow_html=True)
+st.markdown('<div class="footer">
+        📌 Réalisé par <span>KHALED</span> __ <span>OMAR</span> __ <span>AHMED</span><br>
+        © 2025  Spam Detector — Tous droits réservés
+</div>', unsafe_allow_html=True)
