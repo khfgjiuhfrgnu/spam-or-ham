@@ -28,13 +28,12 @@ def preprocess_text(text):
     return ' '.join(words)
 
 
-# لون الخلفية كامل الصفحة
 st.markdown(
     """
     <style>
     /* لون الخلفية كامل الصفحة */
     .stApp {
-        background-color: green;  /* أزرق فاتح */
+        background-color: green;  /* خلفية خضراء */
     }
 
     /* صندوق HAM */
@@ -81,25 +80,55 @@ st.markdown(
             animation: none !important;
         }
     }
+
+    /* ====== أزرار احترافية ====== */
+    div.stButton > button {
+        background-color: #1E90FF;   /* أزرق */
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+
+    div.stButton > button:hover {
+        background-color: #0d6efd;   /* أزرق أغمق */
+        transform: translateY(-2px);
+        box-shadow: 0 6px 10px rgba(0,0,0,0.25);
+    }
+
+    div.stButton > button:active {
+        background-color: #0b5ed7;
+        transform: translateY(0);
+        box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    }
+
+    /* زر أخضر (مثلاً للتأكيد أو HAM) */
+    .btn-green {
+        background-color: #22c55e !important;
+        color: white !important;
+    }
+
+    /* زر أحمر (مثلاً للتحذير أو SPAM) */
+    .btn-red {
+        background-color: #ef4444 !important;
+        color: white !important;
+    }
+
+    /* زر برتقالي (مثلاً لإعادة المحاولة أو خيار إضافي) */
+    .btn-orange {
+        background-color: #f97316 !important;
+        color: white !important;
+    }
     </style>
-    """, unsafe_allow_html=True
-)
-
-
-# عنوان باللون الأزرق
-st.markdown('<h1 style="color: orange; text-align: center;">réalisé par Khaled  __   Omar  __ Ahmed</h1>', unsafe_allow_html=True)
-
-
-# عنوان باللون الأزرق
-st.markdown('<h1 style="color: #1E90FF; text-align: center;"> 📩 Détecteur Spam ou Ham </h1>', unsafe_allow_html=True)
-st.markdown(
-    """
-    <h1 style="color: #1E90FF; text-align: center;">
-        Entrez un message pour vérifier s'il est spam ou ham
-    </h1>
     """,
     unsafe_allow_html=True
 )
+
 
 # Predict single message
 user_input = st.text_area("", max_chars=1000)
