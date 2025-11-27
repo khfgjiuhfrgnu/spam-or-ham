@@ -31,21 +31,15 @@ def preprocess_text(text):
 st.markdown(
     """
     <style>
-    /* Animation Fade-in */
-    .fade-in {
-        animation: fadeIn 6s ease-in-out;
+    /* خلفية افتراضية أنيقة */
+    .stApp {
+        background: linear-gradient(135deg, #f0f4f8, #d9e4f5);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    
-
-    /* صناديق النتائج مع دمج fade-in */
+    /* صناديق HAM */
     .ham-result {
-        background-color: ;
+        background-color: #d1fae5;
         color: #065f46;
         padding: 15px;
         border-radius: 10px;
@@ -53,28 +47,61 @@ st.markdown(
         font-weight: bold;
         text-align: center;
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        animation: fadeIn 1s ease-in-out;
     }
+
+    /* صناديق SPAM */
     .spam-result {
         background-color: #ff0000;  /* أحمر قوي */
-        color: #fff;                /* النص أبيض */
-        padding: 20px;
+        color: #fff;
+        padding: 15px;
         border-radius: 10px;
         margin: 10px 0;
         font-weight: bold;
         text-align: center;
-        box-shadow: 0 0 20px rgba(255,0,0,0.8); /* ظل أحمر قوي */
-        animation: pulse 1s infinite; /* حركة تحذير */
+        box-shadow: 0 0 20px rgba(255,0,0,0.8);
+        animation: pulse 1s infinite;
     }
-      /* Animation pulse */
+
+    /* Animation Fade-in */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Animation Pulse */
     @keyframes pulse {
         0% { box-shadow: 0 0 10px rgba(255,0,0,0.6); }
         50% { box-shadow: 0 0 30px rgba(255,0,0,1); }
         100% { box-shadow: 0 0 10px rgba(255,0,0,0.6); }
     }
+
+    /* خلفية حمراء عند SPAM */
+    .spam-background {
+        background-color: #ff0000 !important;
+    }
     </style>
     """,
     unsafe_allow_html=True
 )
+
+# مثال: إذا النتيجة Spam نبدل الخلفية كاملة
+if prediction == 1:
+    st.markdown(
+        f"""
+        <script>
+        // تغيير الخلفية كاملة للصفحة عند Spam
+        document.querySelector('.stApp').classList.add('spam-background');
+        </script>
+        <div class="spam-result">❌ SPAM — <span class="confiance">{spam_conf:.2f}%</span></div>
+        """,
+        unsafe_allow_html=True
+    )
+else:
+    st.markdown(
+        f'<div class="ham-result">✔ Ham — <span class="confiance">{ham_conf:.2f}%</span></div>',
+        unsafe_allow_html=True
+    )
 
 
 
