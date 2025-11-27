@@ -30,7 +30,7 @@ def preprocess_text(text):
     return ' '.join(words)
 
 # Global CSS (professional UI + cybersecurity-style alerts)
-st.markdown('<div class="footer">📌 Réalisé par Khaled __ Omar __ Ahmed — Projet Spam Detector</div>', unsafe_allow_html=True)
+st.markdown('<div class="footer"> Réalisé par Khaled __ Omar __ Ahmed — Projet Spam Detector</div>', unsafe_allow_html=True)
 st.markdown(
     """
     <style>
@@ -136,6 +136,7 @@ st.markdown(
     /* Footer */
     .footer {
         text-align: center;
+        text-decoration:underline;
         margin-top: 28px;
         font-size: 0.9em;
         color: #555;
@@ -154,7 +155,7 @@ st.markdown(
 )
 
 # Headers
-st.markdown('<h1 class="app-title">📩 Détecteur Spam ou Ham</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="app-title"> Détecteur Spam ou Ham</h1>', unsafe_allow_html=True)
 # Input
 user_input = st.text_area("Entrez un message pour vérifier s'il est spam ou ham", max_chars=1000, placeholder="Tapez votre message ici...")
 
