@@ -28,9 +28,6 @@ def preprocess_text(text):
     return ' '.join(words)
 
 
-
-import streamlit as st
-
 st.set_page_config(page_title="Détecteur Spam ou Ham",
                    page_icon="📧",
                    layout="centered")
