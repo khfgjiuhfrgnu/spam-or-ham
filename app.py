@@ -33,7 +33,7 @@ st.markdown(
     <style>
     /* Animation Fade-in */
     .fade-in {
-        animation: fadeIn 1s ease-in-out;
+        animation: fadeIn 6s ease-in-out;
     }
 
     @keyframes fadeIn {
@@ -54,7 +54,7 @@ st.markdown(
     }
 
     .spam-result {
-        background-color: #fee2e2;
+        background-color: red;
         color: #991b1b;
         padding: 15px;
         border-radius: 10px;
@@ -62,7 +62,7 @@ st.markdown(
         font-weight: bold;
         text-align: center;
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        animation: shake 0.5s ease-in-out infinite;
+        animation: shake 4s ease-in-out infinite;
     }
     </style>
     """,
